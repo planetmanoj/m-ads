@@ -62,7 +62,7 @@ with tab2:
             st.write("**Copy your Ad Tag:**")
             st.code(ad_tag, language='html')
             
-            # I removed st.rerun() here so the tag stays on the screen for the user to copy!
+   # I removed st.rerun() here so the tag stays on the screen for the user to copy!
   st.divider()
     st.subheader("Manage Existing Campaigns")
     ads = get_all_ads()
