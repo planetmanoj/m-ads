@@ -46,14 +46,11 @@ with tab2:
         ad_type = st.selectbox("Ad Format", ["banner", "sidebar", "video", "native"])
         url = st.text_input("Destination URL (e.g., https://example.com)")
         
-       # ... inside your with st.form("new_campaign_form"): block ...
-        
         if st.form_submit_button("Create Ad"):
             with SessionLocal() as db:
                 new_ad = Ad(name=name, advertiser=adv, type=ad_type, url=url)
                 db.add(new_ad)
                 db.commit()
-                
             st.success(f"Campaign '{name}' created successfully!")
             
             # Generate the tag (Using the 'name' variable from your form inputs)
@@ -61,9 +58,8 @@ with tab2:
             
             st.write("**Copy your Ad Tag:**")
             st.code(ad_tag, language='html')
-            
-   # I removed st.rerun() here so the tag stays on the screen for the user to copy!
-  st.divider()
+
+    st.divider()
     st.subheader("Manage Existing Campaigns")
     ads = get_all_ads()
     
