@@ -54,7 +54,7 @@ with tab2:
             st.success(f"Campaign '{name}' created successfully!")
             
             # Generate the tag (Using the 'name' variable from your form inputs)
-            ad_tag = f'''<iframe src="http://localhost:8000?campaign=manoj1" width="300" height="250" frameborder="0"></iframe>'''
+            ad_tag = f'''<iframe src="http://localhost:8000?campaign={name}" width="300" height="250" frameborder="0"></iframe>'''
             
             st.write("**Copy your Ad Tag:**")
             st.code(ad_tag, language='html')
