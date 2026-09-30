@@ -63,16 +63,30 @@ with tab2:
             st.code(ad_tag, language='html')
             
             # I removed st.rerun() here so the tag stays on the screen for the user to copy!
-            
-    st.divider()
-    st.subheader("Toggle Campaign Status")
+  st.divider()
+    st.subheader("Manage Existing Campaigns")
     ads = get_all_ads()
-    for ad in ads:
-        col1, col2 = st.columns([3, 1])
-        col1.write(f"**{ad.name}** ({ad.advertiser}) - Current status: {'🟢 Active' if ad.active else '🔴 Paused'}")
-        if col2.button(f"{'Pause' if ad.active else 'Activate'}", key=f"toggle_{ad.id}"):
-            with SessionLocal() as db:
-                db_ad = db.query(Ad).filter(Ad.id == ad.id).first()
-                db_ad.active = not db_ad.active
-                db.commit()
-            st.rerun()
+    
+    if not ads:
+        st.info("No campaigns to manage.")
+    else:
+        for ad in ads:
+            # Create three columns: Name/Status, Toggle Button, Delete Button
+            col1, col2, col3 = st.columns([3, 1, 1])
+            col1.write(f"**{ad.name}** ({ad.advertiser}) - Current status: {'🟢 Active' if ad.active else '🔴 Paused'}")
+            
+            # Toggle Button
+            if col2.button(f"{'Pause' if ad.active else 'Activate'}", key=f"toggle_{ad.id}"):
+                with SessionLocal() as db:
+                    db_ad = db.query(Ad).filter(Ad.id == ad.id).first()
+                    db_ad.active = not db_ad.active
+                    db.commit()
+                st.rerun()
+                
+            # Delete Button
+            if col3.button("🗑️ Delete", key=f"delete_{ad.id}", type="primary"):
+                with SessionLocal() as db:
+                    db.query(Ad).filter(Ad.id == ad.id).delete()
+                    db.commit()
+                st.success(f"Deleted campaign: {ad.name}")
+                st.rerun()
